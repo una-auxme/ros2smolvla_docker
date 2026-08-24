@@ -1,0 +1,12 @@
+.vscode/*
+log/*
+
+src/**
+
+.env
+
+!src/**/
+!src/sim/.gitkeep
+!src/real/.gitkeep
+!src/lerobot/.gitkeep
+!src/camera/.gitkeep

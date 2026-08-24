@@ -1,0 +1,33 @@
+# Copyright 2026 University of Augsburg, Chair of Mechatronics by Noah Böckmann
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+services:
+  
+  ur10e_lerobot:
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1       # Number of GPUs to use (or 'all')
+              capabilities: [gpu, compute, utility, graphics, display]
+  ur10e_sim:
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              # We explicitly list 'display' and 'compute' now to match your working command
+              capabilities: [gpu, compute, utility, graphics, display]

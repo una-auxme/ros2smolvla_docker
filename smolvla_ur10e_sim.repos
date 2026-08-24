@@ -1,0 +1,10 @@
+repositories:
+  cartesian_controllers:
+    type: git
+    url: https://github.com/fzi-forschungszentrum-informatik/cartesian_controllers.git
+    version: f8aad77697802d9b9ca08d044b87ce58167e4bf9
+
+  ros2smolvla_ur10e_sim:
+    type: git 
+    url: https://github.com/una-auxme/ros2smolvla_ur10e_sim.git
+    version: 0.1.0-beta

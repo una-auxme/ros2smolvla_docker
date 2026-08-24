@@ -1,0 +1,10 @@
+repositories:
+  ros2smolvla_interface_lerobot:
+    type: git
+    url: https://github.com/una-auxme/ros2smolvla_interface_lerobot.git
+    version: 0.1.0-beta
+
+  ros2smolvla_interface_camera:
+    type: git
+    url: https://github.com/una-auxme/ros2smolvla_interface_camera.git
+    version: 0.1.0-beta

@@ -1,0 +1,143 @@
+# Copyright 2026 University of Augsburg, Chair of Mechatronics by Noah Böckmann
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+services:
+  ur10e_sim:
+    # Build the image using the Dockerfile in the current directory
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.ur10e_sim
+    profiles:
+      - sim
+    image: ur10e_sim:latest
+
+    # Network configuration
+    # 'host' allows the container to talk to ROS nodes on your actual machine
+    # and access hardware directly.
+    network_mode: host
+    ipc: host
+    pid: host
+
+    # GUI and Hardware Access (Optional but recommended for ROS)
+    environment:
+      - DISPLAY=${DISPLAY}
+      - QT_X11_NO_MITSHM=1
+      # Set the ROS Domain ID to isolate traffic if needed
+      - ROS_DOMAIN_ID=2
+      - FASTDDS_BUILTIN_TRANSPORTS=LARGE_DATA
+
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=all
+      - __GLX_VENDOR_LIBRARY_NAME=nvidia
+      - __NV_PRIME_RENDER_OFFLOAD=1
+      
+    volumes:
+      # Map X11 socket for GUI applications (Rviz, Gazebo)
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - $HOME/.Xauthority:/root/.Xauthority:rw
+      # (Optional) Mount your local src code to override the container's code
+      # - ./src/sim:/ros2_ws/src
+
+    # Command to run on startup
+    # This keeps the container alive so you can exec into it, 
+    # or you can replace this with: ros2 launch my_package main.launch.py
+    command: bash -c "while true; do sleep 1; done"
+
+  ur10e_real:
+    # Build the image using the Dockerfile in the current directory
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.ur10e_real
+    profiles:
+      - real
+    image: ur10e_real:latest
+
+    cap_add:
+      - SYS_NICE
+    ulimits:
+      rtprio: 99
+      rttime: -1 # corresponds to 'unlimited'
+      memlock: 8428281856
+
+    # Network configuration
+    # 'host' allows the container to talk to ROS nodes on your actual machine
+    # and access hardware directly.
+    network_mode: host
+    ipc: host
+    pid: host
+
+    # GUI and Hardware Access (Optional but recommended for ROS)
+    environment:
+      - DISPLAY=${DISPLAY}
+      - QT_X11_NO_MITSHM=1
+      # Set the ROS Domain ID to isolate traffic if needed
+      - ROS_DOMAIN_ID=2
+      - FASTDDS_BUILTIN_TRANSPORTS=LARGE_DATA
+    volumes:
+      # Map X11 socket for GUI applications (Rviz, Gazebo)
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+
+      # (Optional) Mount your local src code to override the container's code
+      # - ./src/real:/ros2_ws/src
+
+    # 4. Command to run on startup
+    # This keeps the container alive so you can exec into it, 
+    # or you can replace this with: ros2 launch my_package main.launch.py
+    command: bash -c "while true; do sleep 1; done"
+
+  ur10e_lerobot:
+    # Build the image using the Dockerfile in the current directory
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.lerobot
+    profiles:
+      - sim
+      - real
+    image: ur10e_lerobot:latest
+
+    # Network configuration
+    # 'host' allows the container to talk to ROS nodes on your actual machine
+    # and access hardware directly.
+    network_mode: host
+    ipc: host
+    pid: host
+
+    # GUI and Hardware Access (Optional but recommended for ROS)
+    environment:
+      - DISPLAY=${DISPLAY}
+      - QT_X11_NO_MITSHM=1
+      # Set the ROS Domain ID to isolate traffic if needed
+      - ROS_DOMAIN_ID=2
+      - FASTDDS_BUILTIN_TRANSPORTS=LARGE_DATA
+
+      - HF_TOKEN=${HF_TOKEN}
+      - WANDB_API_KEY=${WANDB_API_KEY}
+    volumes:
+      # Map X11 socket for GUI applications (Rviz, Gazebo)
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+
+      # (Optional) Mount your local src code to override the container's code
+      # - ./src/lerobot:/workspace/src
+
+      # For getting the controllers input
+      - /dev/input:/dev/input
+
+      # For accessing the huggingface cache
+      - ~/.cache/huggingface:/root/.cache/huggingface
+    privileged: true
+
+    # Command to run on startup
+    # This keeps the container alive so you can exec into it, 
+    # or you can replace this with: ros2 launch my_package main.launch.py
+    command: bash -c "while true; do sleep 1; done"

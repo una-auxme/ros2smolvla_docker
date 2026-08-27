@@ -265,6 +265,20 @@ Alternatively you can open VS Code inside of the running container by utilizing 
 [Dev Container](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
 extension.
 
+## Cite Us
+[ROS2SmolVLA: Enabling Small Vision-Language-Action Models for Integration into Industrial-Grade Lightweight Robots](https://arxiv.org/abs/2608.23320)
+```bibtex
+@misc{mandischer2026ros2smolvlaenablingsmallvisionlanguageaction,
+      title={ROS2SmolVLA: Enabling Small Vision-Language-Action Models for Integration into Industrial-Grade Lightweight Robots}, 
+      author={Nils Mandischer and Noah Böckmann and Ludwig Holl and Lars Mikelsons},
+      year={2026},
+      eprint={2608.23320},
+      archivePrefix={arXiv},
+      primaryClass={cs.RO},
+      url={https://arxiv.org/abs/2608.23320}, 
+}
+```
+
 ## Used Resources
 This project uses the following repositories and projects:
 - [ros2smolvla_ur10e_real](https://github.com/una-auxme/ros2smolvla_ur10e_real) (ROS2 Package to interface with the
